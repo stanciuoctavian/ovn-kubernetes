@@ -14,6 +14,9 @@
 - name: Kubernetes | Register and start kubelet service
   include_tasks: ./start_kubelet.yml
 
+- pause:
+    minutes: 3
+
 - name: Kubernetes | Fetch OVN subnet for the node
   include_tasks: ./get_ovn_subnet.yml
 
@@ -60,6 +63,10 @@
   win_shell: ping {{ ovn_gateway_ip }} -n 1
   register: ping_ovn_gateway
   ignore_errors: true
+
+- debug:
+    var: ping_ovn_gateway
+    verbosity: 4
 
 - name: Kubernetes | Check if minion-init has executed already
   block:
